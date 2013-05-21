@@ -1,0 +1,33 @@
+#!/bin/sh
+# reference: http://www.seeds-std.co.jp/seedsblog/671.html
+
+# retrieve temperature with a specific software
+GETNUM=`/usr/bin/perl /home/pi/t.pl`
+
+# ceremony. leave these
+if [ "$1" = "autoconf" ]; then
+        if [ -n ${GETNUM} ] ; then
+                echo yes
+                exit 0
+        else
+                echo no
+                exit 0
+        fi
+fi
+
+# configuration for graphs. for details, google these
+if [ "$1" = "config" ]; then
+        echo 'graph_title temperature ds18b20'
+        echo 'graph_args -r --lower-limit -20 --upper-limit 50'
+        echo 'graph_vlabel C'
+        echo 'graph_category HK'
+        echo 'hk0.label C'
+        echo 'hk0.max 50'
+        echo 'hk0.min -20'
+        echo 'hk0.draw LINE1'
+        echo 'hk0.type GAUGE'
+        exit 0
+fi
+
+# finally, you should print out actual value and key
+echo "hk0.value $GETNUM";
